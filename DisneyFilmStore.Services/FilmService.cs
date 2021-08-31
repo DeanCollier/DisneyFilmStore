@@ -23,7 +23,6 @@ namespace DisneyFilmStore.Services
                 new Film()
                 {
                     FilmId = model.FilmId,
-                    OwnerId = _userId,
                     Title = model.Title,
                     Rating = model.Rating,
                     Genre = model.Genre,
@@ -46,7 +45,6 @@ namespace DisneyFilmStore.Services
                 var query =
                     ctx
                         .Films
-                        .Where(e => e.OwnerId == _userId)
                         .Select(
                             e =>
                                 new FilmListItem
@@ -68,7 +66,7 @@ namespace DisneyFilmStore.Services
                 var entity =
                     ctx
                         .Films
-                        .Single(e => e.FilmId == id && e.OwnerId == _userId);
+                        .Single(e => e.FilmId == id);
 
                 return
                     new FilmDetail
@@ -91,7 +89,7 @@ namespace DisneyFilmStore.Services
                 var entity =
                     ctx
                         .Films
-                        .Single(e => e.FilmId == model.FilmId && e.OwnerId == _userId);
+                        .Single(e => e.FilmId == model.FilmId);
 
                 entity.Title = model.Title;
                 entity.Rating = model.Rating;
@@ -111,7 +109,7 @@ namespace DisneyFilmStore.Services
                 var entity =
                     ctx
                         .Films
-                        .Single(e => e.FilmId == filmId && e.OwnerId == _userId);
+                        .Single(e => e.FilmId == filmId);
 
                 ctx.Films.Remove(entity);
 

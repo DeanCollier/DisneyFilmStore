@@ -12,7 +12,6 @@ using System.Web.Http;
 namespace DisneyFilmStore.Controllers
 {
     [Authorize]
-    [RoutePrefix("api/Customer")]
     public class CustomerController : ApiController
     {
         public CustomerService CreateCustomerService()
@@ -74,7 +73,7 @@ namespace DisneyFilmStore.Controllers
 
         [HttpDelete]
         [Route("api/Customer/{id}")]
-        public async Task<IHttpActionResult> DeteteCustomerByIdAsync([FromUri] int id)
+        public async Task<IHttpActionResult> DeleteCustomerByIdAsync([FromUri] int id)
         {
             var service = CreateCustomerService();
             if (!(await service.DeleteCustomerByIdAsync(id)))
