@@ -32,6 +32,7 @@ namespace DisneyFilmStore.Models.CustomerModels
         [MaxLength(200, ErrorMessage = "Address is too long.")]
         public string Address { get; set; }
 
+        [Required] // making this required for now to avoid falsifying member status in updates in CustomerService class
         public bool Member { get; set; } = false;
     }
 }

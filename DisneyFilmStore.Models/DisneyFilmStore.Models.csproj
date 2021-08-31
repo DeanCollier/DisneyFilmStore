@@ -67,6 +67,7 @@
     <Compile Include="FilmModels\FilmDetail.cs" />
     <Compile Include="FilmModels\FilmEdit.cs" />
     <Compile Include="FilmModels\FilmListItem.cs" />
+    <Compile Include="FilmOrderModels\FilmOrderCreate.cs" />
     <Compile Include="OrderModels\OrderCreate.cs" />
     <Compile Include="OrderModels\OrderDetail.cs" />
     <Compile Include="OrderModels\OrderEdit.cs" />
