@@ -12,8 +12,6 @@ namespace DisneyFilmStore.Data
         [Key]
         public int FilmId { get; set; }
         [Required]
-        public Guid OwnerId { get; set; }
-        [Required]
         public string Title { get; set; }
         [Required]
         public double Rating { get; set; }

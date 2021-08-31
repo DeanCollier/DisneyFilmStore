@@ -24,7 +24,7 @@ namespace DisneyFilmStore.Services
                 {
                     OrderDate = model.OrderDate,
                     TotalOrderCost = model.TotalOrderCost,
-                    CustomerId = _userId,
+                    CustomerId = model.CustomerId,
                 };
 
             using (var ctx = new ApplicationDbContext())
@@ -41,7 +41,7 @@ namespace DisneyFilmStore.Services
                 var query =
                     ctx
                         .Orders
-                        .Where(e => e.CustomerId == _userId)
+                        .Where(e => e.Customer.UserId == _userId)
                         .Select(
                             e =>
                                 new OrderListItem
@@ -63,7 +63,7 @@ namespace DisneyFilmStore.Services
                 var entity =
                     ctx
                         .Orders
-                        .Single(e => e.OrderId == model.OrderId && e.CustomerId == _userId);
+                        .Single(e => e.OrderId == model.OrderId && e.Customer.UserId == _userId);
 
                 return ctx.SaveChanges() == 1;
             }
@@ -76,7 +76,7 @@ namespace DisneyFilmStore.Services
                 var entity =
                     ctx
                         .Orders
-                        .Single(e => e.OrderId == orderId && e.CustomerId == _userId);
+                        .Single(e => e.OrderId == orderId && e.Customer.UserId == _userId);
 
                 ctx.Orders.Remove(entity);
 
@@ -92,7 +92,7 @@ namespace DisneyFilmStore.Services
                 var entity =
                     ctx
                         .Orders
-                        .Single(e => e.OrderId == id && e.CustomerId == _userId);
+                        .Single(e => e.OrderId == id && e.Customer.UserId == _userId);
 
 
                 return
@@ -101,7 +101,7 @@ namespace DisneyFilmStore.Services
                         OrderId = entity.OrderId,
                         OrderDate = entity.OrderDate,
                         TotalOrderCost = entity.TotalOrderCost,
-                        CustomerId = entity.CustomerId
+                        CustomerId = entity.Customer.UserId
 
                     };
             }

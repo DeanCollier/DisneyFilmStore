@@ -49,8 +49,7 @@ namespace DisneyFilmStore.Services
                     .Select(c => new CustomerListItem
                         {
                             Id = c.Id,
-                            FullName = $"{c.FirstName} {c.LastName}"
-                        }
+                            FullName = c.FirstName + " " + c.LastName                        }
                     );
 
                 return await query.ToArrayAsync();

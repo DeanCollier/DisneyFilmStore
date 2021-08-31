@@ -18,7 +18,7 @@ namespace DisneyFilmStore.Models.OrderModels
         public double TotalOrderCost { get; set; }
 
         [Required]
-        public Guid CustomerId { get; set; }
+        public int CustomerId { get; set; }
 
     }
 }
