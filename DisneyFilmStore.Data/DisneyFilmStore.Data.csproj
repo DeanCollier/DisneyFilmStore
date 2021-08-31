@@ -145,6 +145,7 @@
   <ItemGroup>
     <Compile Include="Customer.cs" />
     <Compile Include="Film.cs" />
+    <Compile Include="FilmOrder.cs" />
     <Compile Include="IdentityModels.cs" />
     <Compile Include="Migrations\202108312155264_InitialCreate.cs" />
     <Compile Include="Migrations\202108312155264_InitialCreate.designer.cs">
