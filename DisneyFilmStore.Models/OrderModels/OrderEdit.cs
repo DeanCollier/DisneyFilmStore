@@ -16,9 +16,9 @@ namespace DisneyFilmStore.Models.OrderModels
         public DateTime OrderDate { get; set; }
 
         [Required]
-        public double TotalOrderCost { get; set; }
+        public double TotalOrderCost { get; set; } // should be calc based on movie list
 
         [Required]
-        public Guid CustomerId { get; set; }
+        public int CustomerId { get; set; }
     }
 }

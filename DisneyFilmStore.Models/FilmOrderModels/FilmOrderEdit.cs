@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace DisneyFilmStore.Models.FilmOrderModels
 {
-    public class FilmOrderCreate
+    public class FilmOrderEdit
     {
         [Required]
         public int OrderId { get; set; }
         [Required]
         public int FilmId { get; set; }
+
     }
 }

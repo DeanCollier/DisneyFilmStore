@@ -1,4 +1,5 @@
 ﻿using DisneyFilmStore.Data;
+using DisneyFilmStore.Models.FilmOrderModels;
 using DisneyFilmStore.Models.OrderModels;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace DisneyFilmStore.Services
             _userId = userId;
         }
 
-        public bool CreateOrder(OrderCreate model)
+        public async Task<bool> CreateOrderAsync(OrderCreate model)
         {
             var entity =
                 new Order()
@@ -27,10 +28,17 @@ namespace DisneyFilmStore.Services
                     CustomerId = model.CustomerId,
                 };
 
+            var filmOrderService = new FilmOrderService(_userId);
+            foreach (var film in model.FilmIds)
+            {
+                var filmOrderCreate = new FilmOrderCreate { FilmId = film, OrderId = entity.OrderId };
+                await filmOrderService.CreateFilmOrderAsync(filmOrderCreate);
+            }
+
             using (var ctx = new ApplicationDbContext())
             {
                 ctx.Orders.Add(entity);
-                return ctx.SaveChanges() == 1;
+                return await ctx.SaveChangesAsync() == 1;
             }
         }
 
@@ -86,7 +94,6 @@ namespace DisneyFilmStore.Services
 
         public OrderDetail GetOrderById(int id)
         {
-            var orderService = new OrderService(_userId);
             using (var ctx = new ApplicationDbContext())
             {
                 var entity =
@@ -101,7 +108,7 @@ namespace DisneyFilmStore.Services
                         OrderId = entity.OrderId,
                         OrderDate = entity.OrderDate,
                         TotalOrderCost = entity.TotalOrderCost,
-                        CustomerId = entity.Customer.UserId
+                        CustomerId = entity.CustomerId
 
                     };
             }

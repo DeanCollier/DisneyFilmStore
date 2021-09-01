@@ -12,6 +12,7 @@ namespace DisneyFilmStore.Data
     {
         [Key]
         public int Id { get; set; }
+        public Guid UserId { get; set; }
 
         [Required, ForeignKey(nameof(Order))]
         public int OrderId { get; set; }
