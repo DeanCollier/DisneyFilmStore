@@ -1,5 +1,8 @@
-﻿using System;
+﻿using DisneyFilmStore.Data;
+using DisneyFilmStore.Models.FilmOrderModels;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +11,6 @@ namespace DisneyFilmStore.Services
 {
     public class FilmOrderService
     {
-        // THIS IS NOT DONE, JUST COPIED FROM OTHER SERVICE, NOT CORRECT OR COMPLETE AT ALL
         private readonly Guid _userId;
 
         public FilmOrderService(Guid userId)
@@ -22,11 +24,8 @@ namespace DisneyFilmStore.Services
             var entity = new FilmOrder
             {
                 UserId = _userId,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                Address = model.Address,
-                Member = model.Member
+                OrderId = model.OrderId,
+                FilmId = model.FilmId
             };
 
             using (var context = new ApplicationDbContext())
@@ -37,17 +36,16 @@ namespace DisneyFilmStore.Services
         }
 
         // GET ALL / READ
-        public async Task<IEnumerable<FilmOrderListItem>> GetAllFilmOrdersAsync()
+        public async Task<IEnumerable<FilmOrderTitle>> GetAllFilmOrdersAsync()
         {
             using (var context = new ApplicationDbContext())
             {
                 var query = context
                     .FilmOrders
-                    .Where(c => c.UserId == _userId)
-                    .Select(c => new FilmOrderListItem
+                    .Where(fo => fo.UserId == _userId)
+                    .Select(fo => new FilmOrderTitle
                     {
-                        Id = c.Id,
-                        FullName = $"{c.FirstName} {c.LastName}"
+                        FilmTitle = fo.Film.Title
                     }
                     );
 
@@ -56,25 +54,35 @@ namespace DisneyFilmStore.Services
         }
 
         // GET CUSTOMER BY ID / READ
-        public FilmOrderDetail GetFilmOrderById(int id)
+        public FilmOrderTitle GetFilmOrderById(int id)
         {
-            var orderService = new OrderService(_userId);
             using (var context = new ApplicationDbContext())
             {
                 var entity = context
                     .FilmOrders
                     .Single(c => c.UserId == _userId && c.Id == id);
 
-                var orders = orderService.GetOrders(); // getting all orders with userId
+                return new FilmOrderTitle
+                {
+                    FilmTitle = entity.Film.Title
+                };
+            }
+        }
+
+        public FilmOrderDetail GetFilmOrderByFilmAndOrderIds(int filmId, int orderId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var entity = context
+                    .FilmOrders
+                    .Single(fo => fo.UserId == _userId && fo.FilmId == filmId && fo.OrderId == orderId);
 
                 return new FilmOrderDetail
                 {
-                    Id = entity.Id,
-                    FullName = $"{entity.FirstName} {entity.LastName}",
-                    Email = entity.Email,
-                    Address = entity.Address,
-                    Member = entity.Member,
-                    Orders = orders
+                    FilmOrderId = entity.Id,
+                    FilmId = entity.FilmId,
+                    OrderId = entity.OrderId
+
                 };
             }
         }
@@ -86,23 +94,10 @@ namespace DisneyFilmStore.Services
             {
                 var entity = context
                     .FilmOrders
-                    .Single(c => c.UserId == _userId && c.Id == id);
+                    .Single(fo => fo.UserId == _userId && fo.Id == id);
 
-                if (model.FirstName != null)
-                    entity.FirstName = model.FirstName;
-
-                else if (model.LastName != null)
-                    entity.LastName = model.LastName;
-
-                else if (model.Email != null)
-                    entity.Email = model.Email;
-
-                else if (model.Address != null)
-                    entity.Address = model.Address;
-
-                entity.Member = model.Member;
-                // this is problematic because if they don't change member status,
-                // the bool will be false and Member status will automatically be set to false
+                entity.OrderId = model.OrderId;
+                entity.FilmId = model.FilmId;
 
                 return await context.SaveChangesAsync() == 1;
             }
@@ -115,7 +110,7 @@ namespace DisneyFilmStore.Services
             {
                 var entity = context
                     .FilmOrders
-                    .Single(c => c.UserId == _userId && c.Id == id);
+                    .Single(fo => fo.UserId == _userId && fo.Id == id);
 
                 context.FilmOrders.Remove(entity);
                 return await context.SaveChangesAsync() == 1;

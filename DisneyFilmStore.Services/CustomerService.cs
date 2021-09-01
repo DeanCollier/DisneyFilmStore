@@ -47,9 +47,10 @@ namespace DisneyFilmStore.Services
                     .Customers
                     .Where(c => c.UserId == _userId)
                     .Select(c => new CustomerListItem
-                        {
+                    {
                             Id = c.Id,
-                            FullName = c.FirstName + " " + c.LastName                        }
+                            FullName = c.FirstName + " " + c.LastName   
+                    }
                     );
 
                 return await query.ToArrayAsync();
