@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DisneyFilmStore.Models.FilmOrderModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,7 +19,8 @@ namespace DisneyFilmStore.Models.OrderModels
         [Required]
         public double TotalOrderCost { get; set; } // should be calc based on movie list
 
-        // list of movies in order
+        [Required]
+        public IEnumerable<FilmOrderDetail> FilmTitles { get; set; }
 
         [Required]
         public int CustomerId { get; set; }

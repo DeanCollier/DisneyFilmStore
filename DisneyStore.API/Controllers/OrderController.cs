@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace DisneyStore.API.Controllers
@@ -19,14 +20,14 @@ namespace DisneyStore.API.Controllers
             return Ok(orders);
         }
 
-        public IHttpActionResult Order(OrderCreate order)
+        public async Task<IHttpActionResult> OrderAsync(OrderCreate order)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var service = CreateOrderService();
 
-            if (!service.CreateOrder(order))
+            if (!(await service.CreateOrderAsync(order)))
                 return InternalServerError();
 
             return Ok();

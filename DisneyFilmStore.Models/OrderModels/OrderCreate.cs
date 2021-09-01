@@ -21,7 +21,7 @@ namespace DisneyFilmStore.Models.OrderModels
         public int CustomerId { get; set; }
 
         [Required]
-        public List<int> FilmIds { get; set; }
+        public IEnumerable<int> FilmIds { get; set; }
 
     }
 }

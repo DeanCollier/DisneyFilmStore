@@ -11,7 +11,6 @@ namespace DisneyFilmStore.Services
 {
     public class FilmOrderService
     {
-        // THIS IS NOT DONE, JUST COPIED FROM OTHER SERVICE, NOT CORRECT OR COMPLETE AT ALL
         private readonly Guid _userId;
 
         public FilmOrderService(Guid userId)
@@ -37,18 +36,16 @@ namespace DisneyFilmStore.Services
         }
 
         // GET ALL / READ
-        public async Task<IEnumerable<FilmOrderDetail>> GetAllFilmOrdersAsync()
+        public async Task<IEnumerable<FilmOrderTitle>> GetAllFilmOrdersAsync()
         {
             using (var context = new ApplicationDbContext())
             {
                 var query = context
                     .FilmOrders
                     .Where(fo => fo.UserId == _userId)
-                    .Select(fo => new FilmOrderDetail
+                    .Select(fo => new FilmOrderTitle
                     {
-                        Id = fo.Id,
-                        OrderId = fo.OrderId,
-                        FilmId = fo.FilmId
+                        FilmTitle = fo.Film.Title
                     }
                     );
 
@@ -57,7 +54,7 @@ namespace DisneyFilmStore.Services
         }
 
         // GET CUSTOMER BY ID / READ
-        public FilmOrderDetail GetFilmOrderById(int id)
+        public FilmOrderTitle GetFilmOrderById(int id)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -65,11 +62,27 @@ namespace DisneyFilmStore.Services
                     .FilmOrders
                     .Single(c => c.UserId == _userId && c.Id == id);
 
+                return new FilmOrderTitle
+                {
+                    FilmTitle = entity.Film.Title
+                };
+            }
+        }
+
+        public FilmOrderDetail GetFilmOrderByFilmAndOrderIds(int filmId, int orderId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var entity = context
+                    .FilmOrders
+                    .Single(fo => fo.UserId == _userId && fo.FilmId == filmId && fo.OrderId == orderId);
+
                 return new FilmOrderDetail
                 {
-                    Id = entity.Id,
-                    OrderId = entity.OrderId,
-                    FilmId = entity.FilmId
+                    FilmOrderId = entity.Id,
+                    FilmId = entity.FilmId,
+                    OrderId = entity.OrderId
+
                 };
             }
         }
