@@ -102,8 +102,9 @@ namespace DisneyFilmStore.Services
             }
         }
 
-        public bool DeleteFilm(int filmId)
+        public async Task<bool> DeleteFilmAsync(int filmId)
         {
+            var filmOrderService = new FilmOrderService(_userId);
             using (var ctx = new ApplicationDbContext())
             {
                 var entity =
@@ -111,9 +112,11 @@ namespace DisneyFilmStore.Services
                         .Films
                         .Single(e => e.FilmId == filmId);
 
+                int foChanges = await filmOrderService.DeleteFilmOrderByFilmId(entity.FilmId);
+
                 ctx.Films.Remove(entity);
 
-                return ctx.SaveChanges() == 1;
+                return ctx.SaveChanges() == (foChanges + 1);
             }
         }
     }

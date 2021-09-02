@@ -11,7 +11,17 @@ namespace DisneyFilmStore.Data
         public int OrderId { get; set; }
 
         [Required]
-        public DateTime OrderDate { get; set; }
+        public DateTime OrderDate
+        {
+            get
+            {
+                return DateTime.Now;
+            }
+            set
+            {
+                OrderDate = value;
+            }
+        }
 
         [Required]
         public double TotalOrderCost { get; set; }

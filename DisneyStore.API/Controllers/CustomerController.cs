@@ -47,7 +47,7 @@ namespace DisneyFilmStore.Controllers
 
         [HttpGet]
         [Route("api/Customer/{id}")]
-        public async Task<IHttpActionResult> GetCustomerByIdAsync([FromUri] int id)
+        public IHttpActionResult GetCustomerById([FromUri] int id)
         {
             var service = CreateCustomerService();
             var customerDetail = service.GetCustomerById(id); // what will happen if the customer doesn't exist?
