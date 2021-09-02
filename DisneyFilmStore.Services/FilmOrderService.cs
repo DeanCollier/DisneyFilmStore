@@ -1,5 +1,6 @@
 ﻿using DisneyFilmStore.Data;
 using DisneyFilmStore.Models.FilmOrderModels;
+using DisneyFilmStore.Models.OrderModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -69,38 +70,67 @@ namespace DisneyFilmStore.Services
             }
         }
 
-        public FilmOrderDetail GetFilmOrderByFilmAndOrderIds(int filmId, int orderId)
+
+        //// PUT BY ID / UPDATE
+        //public async Task<bool> UpdateFilmOrderByIdAsync(int id, FilmOrderEdit model)
+        //{
+        //    using (var context = new ApplicationDbContext())
+        //    {
+        //        var entity = context
+        //            .FilmOrders
+        //            .Single(fo => fo.UserId == _userId && fo.Id == id);
+
+        //        entity.OrderId = model.OrderId;
+        //        entity.FilmId = model.FilmId;
+
+        //        return await context.SaveChangesAsync() == 1;
+        //    }
+        //}
+
+        public async Task<int> UpdateFilmOrderFromOrderUpdateAsync(OrderEdit model)
         {
+            int changesCount = 0;
             using (var context = new ApplicationDbContext())
             {
-                var entity = context
-                    .FilmOrders
-                    .Single(fo => fo.UserId == _userId && fo.FilmId == filmId && fo.OrderId == orderId);
+                var query =
+                    context
+                        .FilmOrders
+                        .Where(fo => fo.OrderId == model.OrderId && fo.UserId == _userId);
 
-                return new FilmOrderDetail
+                var currentFilmOrders = await query.ToArrayAsync();
+
+                // old films: 1 2 3
+                // updated films: 3 7 8 9
+
+                List<int> currentFilmIds = new List<int>(); // list of current film Ids for order
+                foreach (var filmOrder in currentFilmOrders)
                 {
-                    FilmOrderId = entity.Id,
-                    FilmId = entity.FilmId,
-                    OrderId = entity.OrderId
+                    currentFilmIds.Add(filmOrder.FilmId);
+                }
 
-                };
+                foreach (var filmId in currentFilmIds) // deleting current films no longer in the edited order
+                {
+                    if (!(model.FilmIds.Contains(filmId)))
+                    {
+                        await DeleteFilmOrderByIdAsync(filmId);
+                        changesCount++;
+                    }
+                }
+                foreach (var filmId in model.FilmIds) // adding films that were not previously in the order
+                {
+                    if (!(currentFilmIds.Contains(filmId)))
+                    {
+                        await CreateFilmOrderAsync(
+                            new FilmOrderCreate
+                            {
+                                FilmId = filmId,
+                                OrderId = model.OrderId
+                            });
+                        changesCount++;
+                    }
+                }
             }
-        }
-
-        // PUT BY ID / UPDATE
-        public async Task<bool> UpdateFilmOrderByIdAsync(int id, FilmOrderEdit model)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                var entity = context
-                    .FilmOrders
-                    .Single(fo => fo.UserId == _userId && fo.Id == id);
-
-                entity.OrderId = model.OrderId;
-                entity.FilmId = model.FilmId;
-
-                return await context.SaveChangesAsync() == 1;
-            }
+            return changesCount;
         }
 
         // DELETE
@@ -115,6 +145,27 @@ namespace DisneyFilmStore.Services
                 context.FilmOrders.Remove(entity);
                 return await context.SaveChangesAsync() == 1;
             };
+        }
+
+        // DELETE
+        public async Task<int> DeleteFilmOrderByFilmId(int filmID)
+        {
+            int changeCount = 0;
+            List<FilmOrder> filmOrdersToDelete = new List<FilmOrder>();
+            using (var context = new ApplicationDbContext())
+            {
+                var query = context
+                    .FilmOrders
+                    .Where(fo => fo.UserId == _userId && fo.FilmId == filmID);
+
+                filmOrdersToDelete = await query.ToListAsync();
+            }
+            foreach (var fo in filmOrdersToDelete)
+            {
+                await DeleteFilmOrderByIdAsync(fo.Id);
+                changeCount++;
+            }
+            return changeCount;
         }
     }
 }

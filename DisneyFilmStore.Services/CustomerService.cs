@@ -113,14 +113,17 @@ namespace DisneyFilmStore.Services
         // DELETE
         public async Task<bool> DeleteCustomerByIdAsync(int id)
         {
+            var shippingService = new ShippingInformationService(_userId);
             using (var context = new ApplicationDbContext())
             {
                 var entity = context
                     .Customers
                     .Single(c => c.UserId == _userId && c.Id == id);
 
+                int sChanges = await shippingService.DeleteShippingInfoByCustomerIdAsync(entity.Id);
+
                 context.Customers.Remove(entity);
-                return await context.SaveChangesAsync() == 1;
+                return await context.SaveChangesAsync() == (sChanges + 1);
             };
         }
         

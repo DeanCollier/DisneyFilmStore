@@ -20,7 +20,7 @@ namespace DisneyFilmStore.Models.OrderModels
         public double TotalOrderCost { get; set; } // should be calc based on movie list
 
         [Required]
-        public IEnumerable<FilmOrderDetail> FilmTitles { get; set; }
+        public IEnumerable<FilmOrderTitle> FilmTitles { get; set; }
 
         [Required]
         public int CustomerId { get; set; }

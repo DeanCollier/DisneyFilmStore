@@ -75,10 +75,10 @@
     <Compile Include="OrderModels\OrderDetail.cs" />
     <Compile Include="OrderModels\OrderEdit.cs" />
     <Compile Include="OrderModels\OrderListItem.cs" />
-    <Compile Include="ShippingModels\ShippingCreate.cs" />
-    <Compile Include="ShippingModels\ShippingDetail.cs" />
-    <Compile Include="ShippingModels\ShippingEdit.cs" />
-    <Compile Include="ShippingModels\ShippingListItem.cs" />
+    <Compile Include="ShippingInformationModels\ShippingInfoCreate.cs" />
+    <Compile Include="ShippingInformationModels\ShippingInfoDetail.cs" />
+    <Compile Include="ShippingInformationModels\ShippingInfoEdit.cs" />
+    <Compile Include="ShippingInformationModels\ShippingInfoListItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -91,6 +91,7 @@
       <Name>DisneyFilmStore.Data</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

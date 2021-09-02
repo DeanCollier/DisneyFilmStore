@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace DisneyStore.API.Controllers
@@ -60,11 +61,11 @@ namespace DisneyStore.API.Controllers
             return Ok();
         }
 
-        public IHttpActionResult Delete(int id)
+        public async Task<IHttpActionResult> Delete(int id)
         {
             var service = CreateFilmService();
 
-            if (!service.DeleteFilm(id))
+            if (!(await service.DeleteFilmAsync(id)))
                 return InternalServerError();
 
             return Ok();

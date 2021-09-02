@@ -24,7 +24,6 @@ namespace DisneyFilmStore.Services
             var entity =
                 new Order()
                 {
-                    OrderDate = model.OrderDate,
                     TotalOrderCost = model.TotalOrderCost, // write some calc for this based on films, prices, and member status
                     CustomerId = model.CustomerId,
                 };
@@ -77,7 +76,7 @@ namespace DisneyFilmStore.Services
                 var query = ctx
                     .FilmOrders
                     .Where(fo => fo.OrderId == entity.OrderId)
-                    .Select(fo => new FilmOrderDetail { FilmTitle = fo.Film.Title });
+                    .Select(fo => new FilmOrderTitle { FilmTitle = fo.Film.Title });
 
                 return
                     new OrderDetail
@@ -102,46 +101,17 @@ namespace DisneyFilmStore.Services
                         .Orders
                         .Single(e => e.OrderId == model.OrderId && e.Customer.UserId == _userId);
 
-                entity.OrderDate = model.OrderDate;
-                //// ---------------------------------------------------- Dean got tired ------------------------
-                var query =
-                    ctx
-                        .FilmOrders
-                        .Where(fo => fo.OrderId == entity.OrderId);
+                entity.OrderDate = DateTime.Now;
+                int changeCount = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(model);
 
-                var currentFilmOrders = await query.ToArrayAsync();
-
-                foreach (var oldFilm in currentFilmOrders)
-                {
-                    foreach (var newFilm in model.FilmIds)
-                    {
-                        if (!(model.FilmIds.Contains(oldFilm.FilmId)))
-                        {
-                            await filmOrderService.DeleteFilmOrderByIdAsync(item.Id);
-                        }
-                    }
-                    // grab films with this order number and check to see if they are in the model
-                    //   if they are, do nothing
-                    //   if they aren't, delete
-                    //   add any remaining films
-                    
-                    
-                }
-                // order number 55
-                // before films 1,2,3
-                // after films 3,7,8,9
-
-                // delete FilmOrder for 55/1, 55/2
-                // keep FilmOrder 55/3
-                // add 55/7, 55/8, 55/9
-                //// ---------------------------------------------------- Dean got tired ------------------------
-
-                return ctx.SaveChanges() == 1;
+                return await ctx.SaveChangesAsync() == (changeCount + 1);
             }
         }
 
-        public bool DeleteOrder(int orderId)
+        public async Task<bool> DeleteOrderAsync(int orderId)
         {
+            var filmOrderService = new FilmOrderService(_userId);
+            var shippingService = new ShippingInformationService(_userId);
             using (var ctx = new ApplicationDbContext())
             {
                 var entity =
@@ -149,9 +119,19 @@ namespace DisneyFilmStore.Services
                         .Orders
                         .Single(e => e.OrderId == orderId && e.Customer.UserId == _userId);
 
+                // delete possibly multiple FilmOrders
+                int foChanges = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(
+                    new OrderEdit
+                    {
+                        OrderId = entity.OrderId,
+                        FilmIds = new List<int>() // use blank list to compare for updates
+                    });
+                // one shipment
+                int shipChanges = await shippingService.DeleteShippingInfoByOrderIdAsync(entity.OrderId);
+
                 ctx.Orders.Remove(entity);
 
-                return ctx.SaveChanges() == 1;
+                return ctx.SaveChanges() == (foChanges + shipChanges + 1);
             }
         }
 
