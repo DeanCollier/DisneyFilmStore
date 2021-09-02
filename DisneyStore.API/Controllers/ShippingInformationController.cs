@@ -58,7 +58,7 @@ namespace DisneyStore.API.Controllers
 
             [HttpPut]
             [Route("api/ShippingInformation/{id}")]
-            public async Task<IHttpActionResult> PutCustomerByIdAsync([FromUri] int id, [FromBody] ShippingInfoEdit model)
+            public async Task<IHttpActionResult> PutShippingByIdAsync([FromUri] int id, [FromBody] ShippingInfoEdit model)
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);

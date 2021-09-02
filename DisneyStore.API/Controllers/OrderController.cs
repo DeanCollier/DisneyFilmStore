@@ -40,24 +40,24 @@ namespace DisneyStore.API.Controllers
             return orderService;
         }
 
-        public IHttpActionResult Put(OrderEdit order)
+        public async Task<IHttpActionResult> Put(OrderEdit order)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var service = CreateOrderService();
 
-            if (!service.UpdateOrder(order))
+            if (!(await service.UpdateOrderAsync(order)))
                 return InternalServerError();
 
             return Ok();
         }
 
-        public IHttpActionResult Delete(int id)
+        public async Task<IHttpActionResult> Delete(int id)
         {
             var service = CreateOrderService();
 
-            if (!service.DeleteOrder(id))
+            if (!(await service.DeleteOrderAsync(id)))
                 return InternalServerError();
 
             return Ok();
