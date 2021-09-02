@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DisneyFilmStore.Models.OrderModels
+namespace DisneyFilmStore.Models.ShippingInformationModels
 {
-    public class OrderEdit
+    public class ShippingInfoEdit
     {
         [Required]
-        public int OrderId { get; set; }
-
+        public int Id { get; set; }
         [Required]
-        public IEnumerable<int> FilmIds { get; set; }
+        public string ShippingAddress { get; set; }
     }
 }

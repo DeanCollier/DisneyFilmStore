@@ -62,7 +62,7 @@
     <Compile Include="FilmService.cs" />
     <Compile Include="OrderService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShippingService.cs" />
+    <Compile Include="ShippingInformationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

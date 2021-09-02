@@ -36,6 +36,8 @@ namespace DisneyFilmStore.Data
         public DbSet<Film> Films { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<FilmOrder> FilmOrders { get; set; }
+        public DbSet<ShippingInformation> Shipments { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
