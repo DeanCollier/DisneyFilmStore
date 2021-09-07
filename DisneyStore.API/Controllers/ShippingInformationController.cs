@@ -23,20 +23,20 @@ namespace DisneyStore.API.Controllers
                 return shippingService;
             }
 
-            [HttpPost]
-            [Route("api/ShippingInformation")]
-            public async Task<IHttpActionResult> PostShippingAsync([FromBody] ShippingInfoCreate model)
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            //[HttpPost]  // Created in OrderService with new order
+            //[Route("api/ShippingInformation")]
+            //public async Task<IHttpActionResult> PostShippingAsync([FromBody] ShippingInfoCreate model)
+            //{
+            //    if (!ModelState.IsValid)
+            //        return BadRequest(ModelState);
 
-                var service = CreateShippingInformationService();
+            //    var service = CreateShippingInformationService();
 
-                if (!(await service.CreateShippingInfoAsync(model)))
-                    return InternalServerError();
+            //    if (!(await service.CreateShippingInfoAsync(model)))
+            //        return InternalServerError();
 
-                return Ok();
-            }
+            //    return Ok();
+            //}
 
             [HttpGet]
             [Route("api/ShippingInformation")]
