@@ -24,7 +24,7 @@ namespace DisneyFilmStore.Data
         }
 
         [Required]
-        public double TotalOrderCost { get; set; }
+        public decimal TotalOrderCost { get; set; }
 
         [Required, ForeignKey(nameof(Customer))]
         public int CustomerId { get; set; }

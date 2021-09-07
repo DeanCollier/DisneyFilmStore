@@ -20,8 +20,8 @@ namespace DisneyFilmStore.Models.FilmModels
         [Required]
         public DateTime YearReleased { get; set; }
         [Required]
-        public double MemberCost { get; set; }
+        public decimal MemberCost { get; set; }
         [Required]
-        public double NonMemberCost { get; set; }
+        public decimal NonMemberCost { get; set; }
     }
 }

@@ -70,7 +70,6 @@ namespace DisneyFilmStore.Services
             }
         }
 
-
         //// PUT BY ID / UPDATE
         //public async Task<bool> UpdateFilmOrderByIdAsync(int id, FilmOrderEdit model)
         //{
@@ -108,7 +107,7 @@ namespace DisneyFilmStore.Services
                     currentFilmIds.Add(filmOrder.FilmId);
                 }
 
-                foreach (var filmId in currentFilmIds) // deleting current films no longer in the edited order
+                foreach (var filmId in currentFilmIds) // deleting current films references no longer in the edited order
                 {
                     if (!(model.FilmIds.Contains(filmId)))
                     {
@@ -116,7 +115,7 @@ namespace DisneyFilmStore.Services
                         changesCount++;
                     }
                 }
-                foreach (var filmId in model.FilmIds) // adding films that were not previously in the order
+                foreach (var filmId in model.FilmIds) // adding films references that were not previously in the order
                 {
                     if (!(currentFilmIds.Contains(filmId)))
                     {

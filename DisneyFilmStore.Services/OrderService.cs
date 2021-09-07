@@ -1,4 +1,5 @@
 ﻿using DisneyFilmStore.Data;
+using DisneyFilmStore.Models.FilmModels;
 using DisneyFilmStore.Models.FilmOrderModels;
 using DisneyFilmStore.Models.OrderModels;
 using System;
@@ -24,14 +25,14 @@ namespace DisneyFilmStore.Services
             var entity =
                 new Order()
                 {
-                    TotalOrderCost = model.TotalOrderCost, // write some calc for this based on films, prices, and member status
+                    TotalOrderCost = GetTotalCostOfOrder(model.FilmIds, model.CustomerId), // write some calc for this based on films, prices, and member status
                     CustomerId = model.CustomerId,
                 };
-
+            
             var filmOrderService = new FilmOrderService(_userId);
-            foreach (var film in model.FilmIds)
+            foreach (var filmId in model.FilmIds)
             {
-                var filmOrderCreate = new FilmOrderCreate { FilmId = film, OrderId = entity.OrderId };
+                var filmOrderCreate = new FilmOrderCreate { FilmId = filmId, OrderId = entity.OrderId };
                 await filmOrderService.CreateFilmOrderAsync(filmOrderCreate);
             }
 
@@ -42,6 +43,28 @@ namespace DisneyFilmStore.Services
             }
         }
 
+        private decimal GetTotalCostOfOrder(IEnumerable<int> filmIds, int customerId)
+        {
+            var customerService = new CustomerService(_userId);
+            var filmService = new FilmService(_userId);
+
+            decimal totalOrderCost = 0m;
+            bool isMember = customerService.GetCustomerById(customerId).Member;
+            foreach (var filmId in filmIds)
+            {
+                var filmDetail = filmService.GetFilmById(filmId);
+                if (isMember)
+                {
+                    totalOrderCost += filmDetail.MemberCost;
+                }
+                else
+                {
+                    totalOrderCost += filmDetail.NonMemberCost;
+                }
+            }
+            return totalOrderCost;
+        }
+        
         public IEnumerable<OrderListItem> GetOrders()
         {
             using (var ctx = new ApplicationDbContext())
@@ -103,6 +126,7 @@ namespace DisneyFilmStore.Services
 
                 entity.OrderDate = DateTime.Now;
                 int changeCount = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(model);
+                entity.TotalOrderCost = GetTotalCostOfOrder(model.FilmIds, entity.CustomerId);
 
                 return await ctx.SaveChangesAsync() == (changeCount + 1);
             }
