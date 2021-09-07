@@ -147,13 +147,9 @@
     <Compile Include="Film.cs" />
     <Compile Include="FilmOrder.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\202108312155264_InitialCreate.cs" />
-    <Compile Include="Migrations\202108312155264_InitialCreate.designer.cs">
-      <DependentUpon>202108312155264_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202108312221383_NewMigration.cs" />
-    <Compile Include="Migrations\202108312221383_NewMigration.designer.cs">
-      <DependentUpon>202108312221383_NewMigration.cs</DependentUpon>
+    <Compile Include="Migrations\202109072232548_initial migration.cs" />
+    <Compile Include="Migrations\202109072232548_initial migration.designer.cs">
+      <DependentUpon>202109072232548_initial migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Order.cs" />
@@ -165,11 +161,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202108312155264_InitialCreate.resx">
-      <DependentUpon>202108312155264_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202108312221383_NewMigration.resx">
-      <DependentUpon>202108312221383_NewMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202109072232548_initial migration.resx">
+      <DependentUpon>202109072232548_initial migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

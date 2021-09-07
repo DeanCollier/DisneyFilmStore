@@ -9,9 +9,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace DisneyFilmStore.Controllers
+namespace DisneyStore.API.Controllers
 {
-    [Authorize]
     public class CustomerController : ApiController
     {
         public CustomerService CreateCustomerService()

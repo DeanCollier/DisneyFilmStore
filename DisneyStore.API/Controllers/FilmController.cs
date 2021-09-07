@@ -15,13 +15,13 @@ namespace DisneyStore.API.Controllers
     public class FilmController : ApiController
 
     {
-
         public IHttpActionResult Get()
         {
             FilmService filmService = CreateFilmService();
             var films = filmService.GetFilms();
             return Ok(films);
         }
+
         public IHttpActionResult Post(FilmCreate film)
         {
             if (!ModelState.IsValid)
@@ -34,6 +34,7 @@ namespace DisneyStore.API.Controllers
 
             return Ok();
         }
+
         private FilmService CreateFilmService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
