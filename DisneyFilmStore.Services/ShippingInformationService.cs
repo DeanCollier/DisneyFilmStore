@@ -70,7 +70,7 @@ namespace DisneyFilmStore.Services
                     OrderId = entity.OrderId,
                     CustomerId = entity.CustomerId,
                     OrderDate = entity.Order.OrderDate,
-                    ShippingAddress = entity.Customer.Address
+                    ShippingAddress = entity.Order.Customer.Address
                 };
             }
         }
@@ -86,7 +86,7 @@ namespace DisneyFilmStore.Services
                     .Shipments
                     .Single(s => s.UserId == _userId && s.Id == id);
 
-                entity.Customer.Address = model.ShippingAddress;
+                entity.Order.Customer.Address = model.ShippingAddress;
                 entity.Order.OrderDate = DateTime.Now;
 
                 return await context.SaveChangesAsync() == 2;

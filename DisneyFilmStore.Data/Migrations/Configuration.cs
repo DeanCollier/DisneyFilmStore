@@ -10,7 +10,6 @@
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "DisneyFilmStore.Data.ApplicationDbContext";
         }
 
         protected override void Seed(DisneyFilmStore.Data.ApplicationDbContext context)
