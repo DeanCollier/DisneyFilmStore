@@ -2,6 +2,7 @@
 using DisneyFilmStore.Models.FilmModels;
 using DisneyFilmStore.Models.FilmOrderModels;
 using DisneyFilmStore.Models.OrderModels;
+using DisneyFilmStore.Models.ShippingInformationModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -28,7 +29,11 @@ namespace DisneyFilmStore.Services
                     TotalOrderCost = GetTotalCostOfOrder(model.FilmIds, model.CustomerId), // write some calc for this based on films, prices, and member status
                     CustomerId = model.CustomerId,
                 };
-            
+
+            var shippingService = new ShippingInformationService(_userId);
+            ShippingInfoCreate shippingInfo = new ShippingInfoCreate { OrderId = entity.OrderId, CustomerId = entity.CustomerId };
+            await shippingService.CreateShippingInfoAsync(shippingInfo);
+
             var filmOrderService = new FilmOrderService(_userId);
             foreach (var filmId in model.FilmIds)
             {
