@@ -22,7 +22,6 @@ namespace DisneyFilmStore.Services
             var entity =
                 new Film()
                 {
-                    FilmId = model.FilmId,
                     Title = model.Title,
                     Rating = model.Rating,
                     Genre = model.Genre,

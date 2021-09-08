@@ -23,29 +23,35 @@ namespace DisneyFilmStore.Services
 
         public async Task<bool> CreateOrderAsync(OrderCreate model)
         {
+            int changeCount = 0;
             var entity =
                 new Order()
                 {
                     TotalOrderCost = GetTotalCostOfOrder(model.FilmIds, model.CustomerId), // write some calc for this based on films, prices, and member status
                     CustomerId = model.CustomerId,
+                    OrderDate = DateTime.Now,
                 };
+            using (var ctx = new ApplicationDbContext())
+            {
+                ctx.Orders.Add(entity);
+                if (await ctx.SaveChangesAsync() == 1)
+                    changeCount++;
+            }
 
             var shippingService = new ShippingInformationService(_userId);
             ShippingInfoCreate shippingInfo = new ShippingInfoCreate { OrderId = entity.OrderId, CustomerId = entity.CustomerId };
-            await shippingService.CreateShippingInfoAsync(shippingInfo);
+            if (await shippingService.CreateShippingInfoAsync(shippingInfo))
+                changeCount++;
 
             var filmOrderService = new FilmOrderService(_userId);
             foreach (var filmId in model.FilmIds)
             {
                 var filmOrderCreate = new FilmOrderCreate { FilmId = filmId, OrderId = entity.OrderId };
-                await filmOrderService.CreateFilmOrderAsync(filmOrderCreate);
+                if (await filmOrderService.CreateFilmOrderAsync(filmOrderCreate))
+                    changeCount++;
             }
-
-            using (var ctx = new ApplicationDbContext())
-            {
-                ctx.Orders.Add(entity);
-                return await ctx.SaveChangesAsync() == 1;
-            }
+            return (changeCount == 1 + 1 + model.FilmIds.Count());
+            
         }
 
         private decimal GetTotalCostOfOrder(IEnumerable<int> filmIds, int customerId)
@@ -84,6 +90,7 @@ namespace DisneyFilmStore.Services
                                 {
                                     OrderId = e.OrderId,
                                     TotalOrderCost = e.TotalOrderCost,
+                                    CreatedUtc = e.OrderDate,
                                 }
 
                                 );

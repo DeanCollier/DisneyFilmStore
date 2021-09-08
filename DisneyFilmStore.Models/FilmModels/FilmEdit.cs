@@ -18,7 +18,7 @@ namespace DisneyFilmStore.Models.FilmModels
         [Required]
         public string Genre { get; set; }
         [Required]
-        public DateTime YearReleased { get; set; }
+        public int YearReleased { get; set; }
         [Required]
         public decimal MemberCost { get; set; }
         [Required]
