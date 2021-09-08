@@ -147,11 +147,6 @@
     <Compile Include="Film.cs" />
     <Compile Include="FilmOrder.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\202109072343200_fixing year in film.cs" />
-    <Compile Include="Migrations\202109072343200_fixing year in film.designer.cs">
-      <DependentUpon>202109072343200_fixing year in film.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShippingInformation.cs" />
@@ -159,11 +154,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202109072343200_fixing year in film.resx">
-      <DependentUpon>202109072343200_fixing year in film.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
