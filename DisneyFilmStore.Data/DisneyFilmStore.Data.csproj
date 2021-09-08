@@ -147,9 +147,9 @@
     <Compile Include="Film.cs" />
     <Compile Include="FilmOrder.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\202109072232548_initial migration.cs" />
-    <Compile Include="Migrations\202109072232548_initial migration.designer.cs">
-      <DependentUpon>202109072232548_initial migration.cs</DependentUpon>
+    <Compile Include="Migrations\202109072343200_fixing year in film.cs" />
+    <Compile Include="Migrations\202109072343200_fixing year in film.designer.cs">
+      <DependentUpon>202109072343200_fixing year in film.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Order.cs" />
@@ -161,8 +161,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202109072232548_initial migration.resx">
-      <DependentUpon>202109072232548_initial migration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202109072343200_fixing year in film.resx">
+      <DependentUpon>202109072343200_fixing year in film.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
