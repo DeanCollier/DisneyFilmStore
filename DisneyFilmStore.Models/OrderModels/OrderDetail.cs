@@ -17,7 +17,7 @@ namespace DisneyFilmStore.Models.OrderModels
         public DateTime OrderDate { get; set; }
 
         [Required]
-        public double TotalOrderCost { get; set; } // should be calc based on movie list
+        public decimal TotalOrderCost { get; set; } // should be calc based on movie list
 
         [Required]
         public IEnumerable<FilmOrderTitle> FilmTitles { get; set; }

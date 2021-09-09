@@ -9,7 +9,7 @@ namespace DisneyFilmStore.Models.OrderModels
     public class OrderListItem
     {
         public int OrderId { get; set; }
-        public double TotalOrderCost { get; set; }
+        public decimal TotalOrderCost { get; set; }
         public DateTimeOffset CreatedUtc { get; set; }
     }
 }

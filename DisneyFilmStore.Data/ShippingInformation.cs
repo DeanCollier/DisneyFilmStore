@@ -18,8 +18,7 @@ namespace DisneyFilmStore.Data
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
 
-        [Required, ForeignKey(nameof(Film))]
+        [Required]
         public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
-    }
+}
 }

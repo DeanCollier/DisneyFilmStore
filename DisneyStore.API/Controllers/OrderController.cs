@@ -13,6 +13,15 @@ namespace DisneyStore.API.Controllers
 {
     public class OrderController : ApiController
     {
+        private OrderService CreateOrderService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var orderService = new OrderService(userId);
+            return orderService;
+        }
+
+        [HttpGet]
+        [Route("api/Order")]
         public IHttpActionResult Get()
         {
             OrderService orderService = CreateOrderService();
@@ -20,6 +29,17 @@ namespace DisneyStore.API.Controllers
             return Ok(orders);
         }
 
+        [HttpGet]
+        [Route("api/Order/{id}")]
+        public IHttpActionResult Get(int id)
+        {
+            OrderService orderService = CreateOrderService();
+            var order = orderService.GetOrderById(id);
+            return Ok(order);
+        }
+
+        [HttpPost]
+        [Route("api/Order")]
         public async Task<IHttpActionResult> OrderAsync(OrderCreate order)
         {
             if (!ModelState.IsValid)
@@ -33,13 +53,8 @@ namespace DisneyStore.API.Controllers
             return Ok();
         }
 
-        private OrderService CreateOrderService()
-        {
-            var userId = Guid.Parse(User.Identity.GetUserId());
-            var orderService = new OrderService(userId);
-            return orderService;
-        }
-
+        [HttpPut]
+        [Route("api/Order")]
         public async Task<IHttpActionResult> Put(OrderEdit order)
         {
             if (!ModelState.IsValid)
@@ -53,6 +68,8 @@ namespace DisneyStore.API.Controllers
             return Ok();
         }
 
+        [HttpDelete]
+        [Route("api/Order")]
         public async Task<IHttpActionResult> Delete(int id)
         {
             var service = CreateOrderService();

@@ -9,8 +9,6 @@ namespace DisneyFilmStore.Models.FilmModels
 {
     public class FilmCreate
     {
-        [Key]
-        public int FilmId { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]
@@ -18,10 +16,11 @@ namespace DisneyFilmStore.Models.FilmModels
         [Required]
         public string Genre { get; set; }
         [Required]
-        public DateTime YearReleased { get; set; }
+        [Range(1900,9999)]
+        public int YearReleased { get; set; }
         [Required]
-        public double MemberCost { get; set; }
+        public decimal MemberCost { get; set; }
         [Required]
-        public double NonMemberCost { get; set; }
+        public decimal NonMemberCost { get; set; }
     }
 }
