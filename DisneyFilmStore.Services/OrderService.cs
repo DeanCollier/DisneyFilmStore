@@ -176,18 +176,18 @@ namespace DisneyFilmStore.Services
                         .Single(e => e.OrderId == orderId && e.Customer.UserId == _userId);
 
                 // delete possibly multiple FilmOrders
-                int foChanges = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(entity.OrderId, 
-                    new OrderEdit
-                    {
-                        OrderId = entity.OrderId,
-                        FilmIds = new List<int>() // use blank list to compare for updates
-                    });
+                //int foChanges = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(entity.OrderId, 
+                //    new OrderEdit
+                //    {
+                //        OrderId = entity.OrderId,
+                //        FilmIds = new List<int>() // use blank list to compare for updates
+                //    });
                 // one shipment
                 int shipChanges = await shippingService.DeleteShippingInfoByOrderIdAsync(entity.OrderId);
 
                 ctx.Orders.Remove(entity);
 
-                return ctx.SaveChanges() == (foChanges + shipChanges + 1);
+                return ctx.SaveChanges() == (shipChanges + 1);
             }
         }
 
