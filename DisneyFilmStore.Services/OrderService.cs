@@ -139,6 +139,7 @@ namespace DisneyFilmStore.Services
                 entity.OrderDate = DateTime.Now;
                 await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(model);
                 entity.TotalOrderCost = GetTotalCostOfOrder(model.FilmIds, entity.CustomerId);
+                entity.OrderDate = DateTime.Now;
 
                 return await ctx.SaveChangesAsync() == 1;
             }
@@ -156,6 +157,7 @@ namespace DisneyFilmStore.Services
                         .Single(e => e.OrderId == orderId && e.Customer.UserId == _userId);
 
                 // delete possibly multiple FilmOrders
+
                 await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(
                     new OrderEdit
                     {

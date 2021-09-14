@@ -70,11 +70,13 @@ namespace DisneyFilmStore.Services
                 return
                     new FilmDetail
                     {
+                        Title = entity.Title,
                         Rating = entity.Rating,
                         Genre = entity.Genre,
                         YearReleased = entity.YearReleased,
                         MemberCost = entity.MemberCost,
                         NonMemberCost = entity.NonMemberCost,
+
 
                     };
             }

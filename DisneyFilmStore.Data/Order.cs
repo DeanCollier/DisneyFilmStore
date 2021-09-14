@@ -20,5 +20,6 @@ namespace DisneyFilmStore.Data
         public int CustomerId { get; set; }
 
         public virtual Customer Customer { get; set; }
+        public virtual ICollection<FilmOrder> FilmOrders { get; set; }
     }
 }

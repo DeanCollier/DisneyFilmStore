@@ -86,7 +86,7 @@ namespace DisneyFilmStore.Services
         //    }
         //}
 
-        public async Task<int> UpdateFilmOrderFromOrderUpdateAsync(OrderEdit model)
+        public async Task<int> UpdateFilmOrderFromOrderUpdateAsync(int orderId, OrderEdit model)
         {
             int changesCount = 0;
             using (var context = new ApplicationDbContext())
@@ -94,9 +94,13 @@ namespace DisneyFilmStore.Services
                 var query =
                     context
                         .FilmOrders
+                        .DefaultIfEmpty()
                         .Where(fo => fo.OrderId == model.OrderId && fo.UserId == _userId);
 
-                var currentFilmOrders = await query.ToArrayAsync();
+
+
+
+                //var currentFilmOrders = await query.ToArrayAsync();
 
                 // old films: 1 2 3
                 // updated films: 5 6
@@ -132,7 +136,7 @@ namespace DisneyFilmStore.Services
             return changesCount;
         }
 
-        // DELETE
+        // DELETES MOVIE INSIDE OF ORDER
         public async Task<bool> DeleteFilmOrderByIdAsync(int id)
         {
             using (var context = new ApplicationDbContext())
