@@ -128,6 +128,7 @@ namespace DisneyFilmStore.Services
 
         public async Task<bool> UpdateOrderAsync(OrderEdit model) // check for id in controller
         {
+            int changeCount = 0;
             var filmOrderService = new FilmOrderService(_userId);
             using (var ctx = new ApplicationDbContext())
             {
@@ -136,11 +137,30 @@ namespace DisneyFilmStore.Services
                         .Orders
                         .Single(e => e.OrderId == model.OrderId && e.Customer.UserId == _userId);
 
-                entity.OrderDate = DateTime.Now;
-                int changeCount = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(model);
+                var filmOrdersToRem = new List<FilmOrder>();
+                foreach (var filmOrder in entity.FilmOrders)
+                {
+                       filmOrdersToRem.Add(filmOrder);
+                   // filmOrdersToRem.Add(filmOrder);
+                    //if (!model.FilmIds.Contains(filmOrder.FilmId))
+                    //{
+                    //    // increment changecount
+                    //}
+                }
+                ctx.FilmOrders.RemoveRange(filmOrdersToRem);
+                ctx.SaveChanges();
+                foreach (var filmId in model.FilmIds)
+                {
+                   await filmOrderService.CreateFilmOrderAsync(new FilmOrderCreate { OrderId = model.OrderId, FilmId = filmId });
+                    changeCount += 1;
+                }
                 entity.TotalOrderCost = GetTotalCostOfOrder(model.FilmIds, entity.CustomerId);
+                entity.OrderDate = DateTime.Now;
 
-                return await ctx.SaveChangesAsync() == (changeCount + 1);
+
+                ctx.SaveChanges();
+                return true;
+               // return await ctx.SaveChangesAsync() == (changeCount + 1);
             }
         }
 
@@ -156,7 +176,7 @@ namespace DisneyFilmStore.Services
                         .Single(e => e.OrderId == orderId && e.Customer.UserId == _userId);
 
                 // delete possibly multiple FilmOrders
-                int foChanges = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(
+                int foChanges = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(entity.OrderId, 
                     new OrderEdit
                     {
                         OrderId = entity.OrderId,

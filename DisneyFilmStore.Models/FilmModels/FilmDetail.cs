@@ -19,5 +19,7 @@ namespace DisneyFilmStore.Models.FilmModels
         public decimal MemberCost { get; set; }
         [Required]
         public decimal NonMemberCost { get; set; }
+        [Required]
+        public string Title { get; set; }
     }
 }

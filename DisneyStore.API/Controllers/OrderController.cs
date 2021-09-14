@@ -54,7 +54,7 @@ namespace DisneyStore.API.Controllers
         }
 
         [HttpPut]
-        [Route("api/Order")]
+        [Route("api/Order/{id}")]
         public async Task<IHttpActionResult> Put(OrderEdit order)
         {
             if (!ModelState.IsValid)
@@ -69,7 +69,7 @@ namespace DisneyStore.API.Controllers
         }
 
         [HttpDelete]
-        [Route("api/Order")]
+        [Route("api/Order/{id}")]
         public async Task<IHttpActionResult> Delete(int id)
         {
             var service = CreateOrderService();
