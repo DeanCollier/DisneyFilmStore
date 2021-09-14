@@ -128,7 +128,6 @@ namespace DisneyFilmStore.Services
 
         public async Task<bool> UpdateOrderAsync(OrderEdit model) // check for id in controller
         {
-            int changeCount = 0;
             var filmOrderService = new FilmOrderService(_userId);
             using (var ctx = new ApplicationDbContext())
             {
@@ -137,30 +136,12 @@ namespace DisneyFilmStore.Services
                         .Orders
                         .Single(e => e.OrderId == model.OrderId && e.Customer.UserId == _userId);
 
-                var filmOrdersToRem = new List<FilmOrder>();
-                foreach (var filmOrder in entity.FilmOrders)
-                {
-                       filmOrdersToRem.Add(filmOrder);
-                   // filmOrdersToRem.Add(filmOrder);
-                    //if (!model.FilmIds.Contains(filmOrder.FilmId))
-                    //{
-                    //    // increment changecount
-                    //}
-                }
-                ctx.FilmOrders.RemoveRange(filmOrdersToRem);
-                ctx.SaveChanges();
-                foreach (var filmId in model.FilmIds)
-                {
-                   await filmOrderService.CreateFilmOrderAsync(new FilmOrderCreate { OrderId = model.OrderId, FilmId = filmId });
-                    changeCount += 1;
-                }
+                entity.OrderDate = DateTime.Now;
+                await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(model);
                 entity.TotalOrderCost = GetTotalCostOfOrder(model.FilmIds, entity.CustomerId);
                 entity.OrderDate = DateTime.Now;
 
-
-                ctx.SaveChanges();
-                return true;
-               // return await ctx.SaveChangesAsync() == (changeCount + 1);
+                return await ctx.SaveChangesAsync() == 1;
             }
         }
 
@@ -176,18 +157,19 @@ namespace DisneyFilmStore.Services
                         .Single(e => e.OrderId == orderId && e.Customer.UserId == _userId);
 
                 // delete possibly multiple FilmOrders
-                //int foChanges = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(entity.OrderId, 
-                //    new OrderEdit
-                //    {
-                //        OrderId = entity.OrderId,
-                //        FilmIds = new List<int>() // use blank list to compare for updates
-                //    });
+
+                await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(
+                    new OrderEdit
+                    {
+                        OrderId = entity.OrderId,
+                        FilmIds = new List<int>() // use blank list to compare for updates
+                    });
                 // one shipment
-                int shipChanges = await shippingService.DeleteShippingInfoByOrderIdAsync(entity.OrderId);
+                await shippingService.DeleteShippingInfoByOrderIdAsync(entity.OrderId);
 
                 ctx.Orders.Remove(entity);
 
-                return ctx.SaveChanges() == (shipChanges + 1);
+                return ctx.SaveChanges() == (foChanges + shipChanges + 1);
             }
         }
 

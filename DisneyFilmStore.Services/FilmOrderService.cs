@@ -102,36 +102,36 @@ namespace DisneyFilmStore.Services
 
                 //    var currentfilmorders = await query.ToArrayAsync();
 
-                //    //old films: 1 2 3
-                //    //updated films: 3 7 8 9
+                // old films: 1 2 3
+                // updated films: 5 6
 
-                //    List<int> currentfilmids = new List<int>(); // list of current film ids for order
-                //    foreach (var filmorder in currentfilmorders)
-                //    {
-                //        currentfilmids.Add(filmorder.FilmId);
-                //    }
+                //List<int> currentFilmIds = new List<int>(); // list of current film Ids for order
+                //foreach (var filmOrder in currentFilmOrders)
+                //{
+                //    currentFilmIds.Add(filmOrder.FilmId);
+                //}
 
-                //    foreach (var filmid in currentfilmids) // deleting current films references no longer in the edited order
+                //foreach (var filmId in currentFilmIds) // deleting current films references no longer in the edited order
+                //{
+                //    if (!(model.FilmIds.Contains(filmId)))
                 //    {
-                //        if (!(model.FilmIds.Contains(filmid)))
-                //        {
-                //            changesCount++;
-                //            await DeleteFilmOrderByIdAsync(filmid);
-                //        }
+                //        changesCount++;
+                //        await DeleteFilmOrderByIdAsync(filmId);
                 //    }
-                //    foreach (var filmid in model.FilmIds) // adding films references that were not previously in the order
+                //}
+                //foreach (var filmId in model.FilmIds) // adding films references that were not previously in the order
+                //{
+                //    if (!(currentFilmIds.Contains(filmId)))
                 //    {
-                //        if (!(currentfilmids.Contains(filmid)))
-                //        {
-                //            await CreateFilmOrderAsync(
-                //                new FilmOrderCreate
-                //                {
-                //                    FilmId = filmid,
-                //                    OrderId = model.OrderId
-                //                });
-                //            changesCount++;
-                //        }
+                //        await CreateFilmOrderAsync(
+                //            new FilmOrderCreate
+                //            {
+                //                FilmId = filmId,
+                //                OrderId = model.OrderId
+                //            });
+                //        changesCount++;
                 //    }
+                //}
             }
             return changesCount;
         }
