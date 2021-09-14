@@ -137,10 +137,10 @@ namespace DisneyFilmStore.Services
                         .Single(e => e.OrderId == model.OrderId && e.Customer.UserId == _userId);
 
                 entity.OrderDate = DateTime.Now;
-                int changeCount = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(model);
+                await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(model);
                 entity.TotalOrderCost = GetTotalCostOfOrder(model.FilmIds, entity.CustomerId);
 
-                return await ctx.SaveChangesAsync() == (changeCount + 1);
+                return await ctx.SaveChangesAsync() == 1;
             }
         }
 
@@ -156,18 +156,18 @@ namespace DisneyFilmStore.Services
                         .Single(e => e.OrderId == orderId && e.Customer.UserId == _userId);
 
                 // delete possibly multiple FilmOrders
-                int foChanges = await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(
+                await filmOrderService.UpdateFilmOrderFromOrderUpdateAsync(
                     new OrderEdit
                     {
                         OrderId = entity.OrderId,
                         FilmIds = new List<int>() // use blank list to compare for updates
                     });
                 // one shipment
-                int shipChanges = await shippingService.DeleteShippingInfoByOrderIdAsync(entity.OrderId);
+                await shippingService.DeleteShippingInfoByOrderIdAsync(entity.OrderId);
 
                 ctx.Orders.Remove(entity);
 
-                return ctx.SaveChanges() == (foChanges + shipChanges + 1);
+                return ctx.SaveChanges() == 1;
             }
         }
 

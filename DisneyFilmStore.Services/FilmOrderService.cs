@@ -99,7 +99,7 @@ namespace DisneyFilmStore.Services
                 var currentFilmOrders = await query.ToArrayAsync();
 
                 // old films: 1 2 3
-                // updated films: 3 7 8 9
+                // updated films: 5 6
 
                 List<int> currentFilmIds = new List<int>(); // list of current film Ids for order
                 foreach (var filmOrder in currentFilmOrders)
@@ -107,11 +107,11 @@ namespace DisneyFilmStore.Services
                     currentFilmIds.Add(filmOrder.FilmId);
                 }
 
-                foreach (var filmId in currentFilmIds) // deleting current films references no longer in the edited order
+                for (int i = 0; i < currentFilmIds.Count(); i++) // deleting current films references no longer in the edited order
                 {
-                    if (!(model.FilmIds.Contains(filmId)))
+                    if (!(model.FilmIds.Contains(currentFilmIds[i])))
                     {
-                        await DeleteFilmOrderByIdAsync(filmId);
+                        await DeleteFilmOrderByIdAsync(currentFilmOrders[i].Id);
                         changesCount++;
                     }
                 }
