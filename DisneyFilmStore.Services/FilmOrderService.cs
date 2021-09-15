@@ -86,7 +86,7 @@ namespace DisneyFilmStore.Services
         //    }
         //}
 
-        public async Task<int> UpdateFilmOrderFromOrderUpdateAsync(int orderId, OrderEdit model)
+        public async Task<int> UpdateFilmOrderFromOrderUpdateAsync(OrderEdit model)
         {
             int changesCount = 0;
             using (var context = new ApplicationDbContext())
@@ -100,38 +100,38 @@ namespace DisneyFilmStore.Services
 
 
 
-                //    var currentfilmorders = await query.ToArrayAsync();
+                var currentFilmOrders = await query.ToArrayAsync();
 
                 // old films: 1 2 3
                 // updated films: 5 6
 
-                //List<int> currentFilmIds = new List<int>(); // list of current film Ids for order
-                //foreach (var filmOrder in currentFilmOrders)
-                //{
-                //    currentFilmIds.Add(filmOrder.FilmId);
-                //}
+                List<int> currentFilmIds = new List<int>(); // list of current film Ids for order
+                foreach (var filmOrder in currentFilmOrders)
+                {
+                    currentFilmIds.Add(filmOrder.FilmId);
+                }
 
-                //foreach (var filmId in currentFilmIds) // deleting current films references no longer in the edited order
-                //{
-                //    if (!(model.FilmIds.Contains(filmId)))
-                //    {
-                //        changesCount++;
-                //        await DeleteFilmOrderByIdAsync(filmId);
-                //    }
-                //}
-                //foreach (var filmId in model.FilmIds) // adding films references that were not previously in the order
-                //{
-                //    if (!(currentFilmIds.Contains(filmId)))
-                //    {
-                //        await CreateFilmOrderAsync(
-                //            new FilmOrderCreate
-                //            {
-                //                FilmId = filmId,
-                //                OrderId = model.OrderId
-                //            });
-                //        changesCount++;
-                //    }
-                //}
+                for (int i = 0; i < currentFilmIds.Count(); i++) // deleting current films references no longer in the edited order
+                {
+                    if (!(model.FilmIds.Contains(currentFilmIds[i])))
+                    {
+                        await DeleteFilmOrderByIdAsync(currentFilmOrders[i].Id);
+                        changesCount++;
+                    }
+                }
+                foreach (var filmId in model.FilmIds) // adding films references that were not previously in the order
+                {
+                    if (!(currentFilmIds.Contains(filmId)))
+                    {
+                        await CreateFilmOrderAsync(
+                            new FilmOrderCreate
+                            {
+                                FilmId = filmId,
+                                OrderId = model.OrderId
+                            });
+                        changesCount++;
+                    }
+                }
             }
             return changesCount;
         }
