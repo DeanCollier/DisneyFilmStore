@@ -86,7 +86,7 @@ namespace DisneyFilmStore.Services
         //    }
         //}
 
-        public async Task<int> UpdateFilmOrderFromOrderUpdateAsync(int orderId, OrderEdit model)
+        public async Task<int> UpdateFilmOrderFromOrderUpdateAsync(OrderEdit model)
         {
             int changesCount = 0;
             using (var context = new ApplicationDbContext())
@@ -100,7 +100,7 @@ namespace DisneyFilmStore.Services
 
 
 
-                //var currentFilmOrders = await query.ToArrayAsync();
+                var currentFilmOrders = await query.ToArrayAsync();
 
                 // old films: 1 2 3
                 // updated films: 5 6

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DisneyFilmStore.Services
 {
     public class OrderService
@@ -51,7 +52,7 @@ namespace DisneyFilmStore.Services
                     changeCount++;
             }
             return (changeCount == 1 + 1 + model.FilmIds.Count());
-            
+
         }
 
         private decimal GetTotalCostOfOrder(IEnumerable<int> filmIds, int customerId)
@@ -75,7 +76,7 @@ namespace DisneyFilmStore.Services
             }
             return totalOrderCost;
         }
-        
+
         public IEnumerable<OrderListItem> GetOrders()
         {
             using (var ctx = new ApplicationDbContext())
@@ -173,7 +174,6 @@ namespace DisneyFilmStore.Services
             }
         }
 
-        
+
     }
 }
-
