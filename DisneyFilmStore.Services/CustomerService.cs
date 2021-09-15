@@ -1,5 +1,6 @@
 ﻿using DisneyFilmStore.Data;
 using DisneyFilmStore.Models.CustomerModels;
+using DisneyFilmStore.Models.OrderModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -67,7 +68,17 @@ namespace DisneyFilmStore.Services
                     .Customers
                     .Single(c => c.UserId == _userId && c.Id == id);
 
-                var orders = orderService.GetOrders(); // getting all orders with userId
+                var query = context
+                    .Orders
+                    .Where(o => o.CustomerId == entity.Id) // getting all orders with userId and customerId
+                    .Select(o => new OrderListItem
+                    {
+                        OrderId = o.OrderId,
+                        TotalOrderCost = o.TotalOrderCost,
+                        CreatedUtc = o.OrderDate
+                    });
+
+                var orders = query.ToArray();
 
                 return new CustomerDetail
                 {
@@ -90,16 +101,16 @@ namespace DisneyFilmStore.Services
                     .Customers
                     .Single(c => c.UserId == _userId && c.Id == id);
 
-                if (model.FirstName != null)
+                if (model.FirstName != null) // if included in model, true
                     entity.FirstName = model.FirstName;  
 
-                else if (model.LastName != null)
+                if (model.LastName != null)
                     entity.LastName = model.LastName;
 
-                else if (model.Email != null)
+                if (model.Email != null)
                     entity.Email = model.Email;
 
-                else if (model.Address != null)
+                if (model.Address != null)
                     entity.Address = model.Address;
 
                 entity.Member = model.Member;
