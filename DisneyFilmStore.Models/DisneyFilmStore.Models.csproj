@@ -75,10 +75,10 @@
     <Compile Include="OrderModels\OrderDetail.cs" />
     <Compile Include="OrderModels\OrderEdit.cs" />
     <Compile Include="OrderModels\OrderListItem.cs" />
-    <Compile Include="ShippingInfoCreate.cs" />
-    <Compile Include="ShippingInfoDetail.cs" />
-    <Compile Include="ShippingInfoEdit.cs" />
-    <Compile Include="ShippingInfoListItem.cs" />
+    <Compile Include="ShippingInfoModels\ShippingInfoCreate.cs" />
+    <Compile Include="ShippingInfoModels\ShippingInfoDetail.cs" />
+    <Compile Include="ShippingInfoModels\ShippingInfoEdit.cs" />
+    <Compile Include="ShippingInfoModels\ShippingInfoListItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
