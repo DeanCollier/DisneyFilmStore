@@ -5,14 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DisneyFilmStore.Models.OrderModels
+namespace DisneyFilmStore.Models.FilmOrderModels
 {
-    public class OrderEdit
+    public class FilmOrderTitle
     {
         [Required]
-        public int OrderId { get; set; }
-
-        [Required]
-        public IEnumerable<int> FilmIds { get; set; }
+        public string FilmTitle { get; set; }
     }
 }

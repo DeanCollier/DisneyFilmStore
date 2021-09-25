@@ -14,10 +14,12 @@ namespace DisneyFilmStore.Models.FilmModels
         [Required]
         public string Genre { get; set; }
         [Required]
-        public DateTime YearReleased { get; set; }
+        public int YearReleased { get; set; }
         [Required]
-        public double MemberCost { get; set; }
+        public decimal MemberCost { get; set; }
         [Required]
-        public double NonMemberCost { get; set; }
+        public decimal NonMemberCost { get; set; }
+        [Required]
+        public string Title { get; set; }
     }
 }

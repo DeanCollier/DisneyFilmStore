@@ -14,10 +14,10 @@ namespace DisneyFilmStore.Data
         public DateTime OrderDate { get; set; }
 
         [Required]
-        public double TotalOrderCost { get; set; }
+        public decimal TotalOrderCost { get; set; }
 
         [Required, ForeignKey(nameof(Customer))]
-        public Guid CustomerId { get; set; }
+        public int CustomerId { get; set; }
 
         public virtual Customer Customer { get; set; }
     }

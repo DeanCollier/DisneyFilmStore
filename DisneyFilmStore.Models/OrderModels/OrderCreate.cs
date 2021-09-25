@@ -12,13 +12,10 @@ namespace DisneyFilmStore.Models.OrderModels
     public class OrderCreate
     {
         [Required]
-        public DateTime OrderDate { get; set; }
+        public int CustomerId { get; set; }
 
         [Required]
-        public double TotalOrderCost { get; set; }
-
-        [Required]
-        public Guid CustomerId { get; set; }
+        public IEnumerable<int> FilmIds { get; set; }
 
     }
 }
